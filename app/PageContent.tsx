@@ -7,15 +7,17 @@ const fetchData = async () => {
 };
 
 export const PageContent = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["apiData"],
     queryFn: fetchData,
     staleTime: 3600000,
+    retry: false,
   });
-
-  const hasAlPastor = data
-    ?.map((item: string) => item.toLowerCase())
-    .includes("pastor");
+  const hasError = data?.error;
+  const hasAlPastor =
+    data && data.map
+      ? data?.map((item: string) => item.toLowerCase()).includes("pastor")
+      : false;
   return (
     <>
       <div className="flex flex-grow">
@@ -33,12 +35,12 @@ export const PageContent = () => {
         />
       </div>
       <div className="flex flex-grow font-bold text-5xl text-center">
-        {!error && (
+        {!hasError && (
           <div className="">
             {isLoading ? "Loading..." : hasAlPastor ? "Yes" : "No"}
           </div>
         )}
-        {error && <div className="">{error && "Error"}</div>}
+        {hasError && <div className="">Try again later</div>}
       </div>
     </>
   );
