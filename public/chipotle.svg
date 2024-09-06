@@ -1,0 +1,28 @@
+<svg id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149.4 149.4" width="2500" height="2500">
+    <style>.st0{fill:#a81612}.st1{fill:#fff}.st2{fill:#451400}</style>
+    <style>.skull{fill:#ffffff;stroke:#451400;stroke-miterlimit:10;transform: scale(2.5); transformX: -10px;}</style>
+    <style>.test{fill:#fff}</style>
+    <title>1024</title>
+    <g id="Page-1">
+        <g id="_x31_024">
+            <g id="Chipotle_Mexican_Grill_logo" transform="translate(50 50)">
+                <g id="layer1" transform="translate(.302 .485)">
+                    <path id="path3938" class="st0" d="M99.1 24.2c0 41.2-33.5 74.7-74.7 74.7s-74.7-33.5-74.7-74.7 33.5-74.7 74.7-74.7S99.1-17 99.1 24.2z"/>
+                    <path id="path3936" class="st1" d="M69.7 24.2c0 25-20.3 45.3-45.3 45.3-25 0-45.3-20.3-45.3-45.3S-.6-21.1 24.4-21.1c25 0 45.3 20.3 45.3 45.3z"/>
+                    <path id="path3934" class="st2" d="M66.3 24.2c0 23.1-18.8 41.9-41.9 41.9-23.1 0-41.9-18.8-41.9-41.9S1.3-17.7 24.4-17.7c23.1 0 41.9 18.8 41.9 41.9z"/>
+                    <!-- <circle class="test" cx="2" cy="0" r="100"></circle> -->
+                    <g transform="translate(-5.3,-8)">
+                        <path class="skull" d="M6.26,23.5h0a5.83,5.83,0,0,0-4.69-5.72l-.09,0V12A10.52,10.52,0,0,1,12,1.5h0A10.52,10.52,0,0,1,22.52,12v5.74l-.09,0a5.83,5.83,0,0,0-4.69,5.72h0"></path>
+                        <line class="skull" x1="12" y1="20.63" x2="12" y2="23.5"></line>
+                        <line class="skull" x1="9.13" y1="20.63" x2="9.13" y2="23.5"></line>
+                        <line class="skull" x1="14.87" y1="20.63" x2="14.87" y2="23.5"></line>
+                        <circle class="skull" cx="7.7" cy="12.5" r="2.39"></circle>
+                        <circle class="skull" cx="16.3" cy="12.5" r="2.39"></circle>
+                        <line class="skull" x1="11.04" y1="17.76" x2="12.96" y2="17.76"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
