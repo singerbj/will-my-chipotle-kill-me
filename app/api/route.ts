@@ -10,6 +10,7 @@ import { NextRequest } from "next/server";
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
 const MENU_ITEMS_KEY = "menuItems";
 const HOURS_TO_CACHE = 24;
+const DEFAULT_SELECTOR_TIMEOUT = 10000;
 
 const exePath =
   process.platform === "win32"
@@ -114,10 +115,14 @@ const getChipotleMenuData = async () => {
     await page.goto(SCRAPE_URL, { waitUntil: "networkidle2", timeout: 0 });
     console.log("navigated successfully to ", SCRAPE_URL);
 
-    await page.waitForSelector(".toast-name-container", { timeout: 5000 });
+    await page.waitForSelector(".toast-name-container", {
+      timeout: DEFAULT_SELECTOR_TIMEOUT,
+    });
     await page.click(".toast-name-container");
 
-    await page.waitForSelector('input[type="text"]', { timeout: 5000 });
+    await page.waitForSelector('input[type="text"]', {
+      timeout: DEFAULT_SELECTOR_TIMEOUT,
+    });
     await page.click('input[type="text"]');
 
     await page.focus('input[type="text"]');
@@ -126,23 +131,25 @@ const getChipotleMenuData = async () => {
     await page.keyboard.press("Enter");
     await page.keyboard.press("Enter");
 
-    await page.waitForSelector(".search-container > img", { timeout: 5000 });
+    await page.waitForSelector(".search-container > img", {
+      timeout: DEFAULT_SELECTOR_TIMEOUT,
+    });
     await page.click(".search-container > img");
 
     await page.waitForSelector(".restaurant-address .address", {
-      timeout: 5000,
+      timeout: DEFAULT_SELECTOR_TIMEOUT,
     });
     await page.click(".restaurant-address .address");
 
     await page.waitForSelector(".pickup-btn div[role='button']", {
-      timeout: 5000,
+      timeout: DEFAULT_SELECTOR_TIMEOUT,
     });
     await page.click(".pickup-btn div[role='button']");
 
     await page.waitForSelector(
       ".meal-builder-item-selector-card-container[data-qa-item-name='Chicken']",
       {
-        timeout: 5000,
+        timeout: DEFAULT_SELECTOR_TIMEOUT,
       }
     );
     const menuItems = await page.evaluate(() => {
