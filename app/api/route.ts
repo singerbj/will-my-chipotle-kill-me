@@ -76,9 +76,10 @@ const getChipotleMenuData = async () => {
     });
   }
 
+  console.log("creating page");
+  const page = await browser.newPage();
+
   try {
-    console.log("creating page");
-    const page = await browser.newPage();
     await page.setRequestInterception(true);
 
     page.on("request", (request: any) => {
