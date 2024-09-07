@@ -60,7 +60,7 @@ const getChipotleMenuData = async () => {
   const page = await browser.newPage();
   try {
     console.log("doing cheerio");
-    await page.goto(SCRAPE_URL, { timeout: 5000 });
+    await page.goto(SCRAPE_URL, { timeout: 0 });
     console.log("navigated successfully to ", SCRAPE_URL);
 
     await page.waitForSelector(".toast-name-container", { timeout: 5000 });
