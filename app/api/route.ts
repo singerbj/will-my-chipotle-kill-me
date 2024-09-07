@@ -80,32 +80,42 @@ const getChipotleMenuData = async () => {
     // });
     // await page.click(".toast-name-container");
 
+    console.log("clicking input");
     await page.waitForSelector('input[type="text"]', {
       timeout: DEFAULT_SELECTOR_TIMEOUT,
     });
     await page.click('input[type="text"]');
 
+    console.log("focusing input");
     await page.focus('input[type="text"]');
+
+    console.log("typing in input");
     await page.type('input[type="text"]', "55424");
+
+    console.log("pressing enter 3 times");
     await page.keyboard.press("Enter");
     await page.keyboard.press("Enter");
     await page.keyboard.press("Enter");
 
+    console.log("clicking the search button");
     await page.waitForSelector(".search-container > img", {
       timeout: DEFAULT_SELECTOR_TIMEOUT,
     });
     await page.click(".search-container > img");
 
+    console.log("clicking the address");
     await page.waitForSelector(".restaurant-address .address", {
       timeout: DEFAULT_SELECTOR_TIMEOUT,
     });
     await page.click(".restaurant-address .address");
 
+    console.log("clicking the pickup button");
     await page.waitForSelector(".pickup-btn div[role='button']", {
       timeout: DEFAULT_SELECTOR_TIMEOUT,
     });
     await page.click(".pickup-btn div[role='button']");
 
+    console.log("scraping the ingredients");
     await page.waitForSelector(
       ".meal-builder-item-selector-card-container[data-qa-item-name='Chicken']",
       {
