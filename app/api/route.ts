@@ -107,7 +107,9 @@ const getChipotleMenuData = async () => {
 
     return menuItems;
   } catch (e) {
-    // await page.screenshot({ path: "screenshots/error.png" });
+    if (isLocal) {
+      await page.screenshot({ path: "screenshots/error.png" });
+    }
     throw e;
   }
 };
@@ -129,7 +131,8 @@ export async function GET(request: NextRequest) {
       return Response.json(menuItems);
     }
   } catch (e) {
-    console.error(e);
-    return Response.json({ error: e });
+    // console.error(e);
+    // return Response.json({ error: e });
+    throw e;
   }
 }
