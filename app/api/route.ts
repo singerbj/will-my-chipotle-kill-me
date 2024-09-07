@@ -111,6 +111,7 @@ const getChipotleMenuData = async () => {
   }
 };
 
+export const maxDuration = 60; // This function can run for a maximum of 5 seconds
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
