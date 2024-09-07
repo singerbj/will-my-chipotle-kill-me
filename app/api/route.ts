@@ -1,8 +1,8 @@
 // import chromium from "@sparticuz/chromium-min";
 // import puppeteer from "puppeteer-core";
 
-const puppeteer = require("puppeteer");
-const chrome = require("chrome-aws-lambda");
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium-min";
 
 import cacheData from "memory-cache";
 import { NextRequest } from "next/server";
@@ -18,31 +18,44 @@ const exePath =
     ? "/usr/bin/google-chrome"
     : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
-const getOptions = async () => {
-  let options;
-  if (process.env.NODE_ENV === "production") {
-    console.log("using production options");
-    options = {
-      args: chrome.args,
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless,
-    };
-  } else {
-    console.log("using non-production options");
-    options = {
-      args: [],
-      // executablePath: exePath,
-      headless: true,
-    };
-  }
-  return options;
-};
+// const getOptions = async () => {
+//   let options;
+//   if (process.env.NODE_ENV === "production") {
+//     console.log("using production options");
+//     options = {
+//       args: chrome.args,
+//       executablePath: await chrome.executablePath,
+//       headless: chrome.headless,
+//     };
+//   } else {
+//     console.log("using non-production options");
+//     options = {
+//       args: [],
+//       // executablePath: exePath,
+//       headless: true,
+//     };
+//   }
+//   return options;
+// };
 
 const getChipotleMenuData = async () => {
   console.log("creating browser");
-  const options = await getOptions();
-  console.log(options, options);
-  const browser = await puppeteer.launch(options);
+  // identify whether we are running locally or in AWS
+  const isLocal = process.env.AWS_EXECUTION_ENV === undefined;
+
+  const browser = isLocal
+    ? // if we are running locally, use the puppeteer that is installed in the node_modules folder
+      await require("puppeteer").launch()
+    : // if we are running in AWS, download and use a compatible version of chromium at runtime
+      await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(
+          "https://github.com/Sparticuz/chromium/releases/download/v119.0.2/chromium-v119.0.2-pack.tar"
+        ),
+        headless: chromium.headless,
+      });
+
   console.log("creating page");
   const page = await browser.newPage();
   try {
