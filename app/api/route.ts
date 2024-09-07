@@ -38,7 +38,9 @@ const getOptions = async () => {
 
 const getChipotleMenuData = async () => {
   console.log("creating browser");
-  const browser = await puppeteer.launch(await getOptions());
+  const options = await getOptions();
+  console.log(options, options);
+  const browser = await puppeteer.launch(options);
   console.log("creating page");
   const page = await browser.newPage();
   try {
@@ -101,10 +103,10 @@ export async function GET(request: NextRequest) {
 
     const menuItems = cacheData.get(MENU_ITEMS_KEY);
     if (!force && menuItems) {
-      console.log("returning cached data", force);
+      console.log("returning cached data - force: ", force);
       return Response.json(menuItems);
     } else {
-      console.log("returning scraped data", force);
+      console.log("returning scraped data - force: ", force);
       const menuItems = await getChipotleMenuData();
       cacheData.put(MENU_ITEMS_KEY, menuItems, HOURS_TO_CACHE * 1000 * 60 * 60);
       return Response.json(menuItems);
