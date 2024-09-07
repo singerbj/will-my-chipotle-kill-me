@@ -10,50 +10,9 @@ import { NextRequest } from "next/server";
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
 const MENU_ITEMS_KEY = "menuItems";
 const HOURS_TO_CACHE = 24;
-const DEFAULT_SELECTOR_TIMEOUT = 10000;
-
-const exePath =
-  process.platform === "win32"
-    ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-    : process.platform === "linux"
-    ? "/usr/bin/google-chrome"
-    : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-
-// const getOptions = async () => {
-//   let options;
-//   if (process.env.NODE_ENV === "production") {
-//     console.log("using production options");
-//     options = {
-//       args: chrome.args,
-//       executablePath: await chrome.executablePath,
-//       headless: chrome.headless,
-//     };
-//   } else {
-//     console.log("using non-production options");
-//     options = {
-//       args: [],
-//       // executablePath: exePath,
-//       headless: true,
-//     };
-//   }
-//   return options;
-// };
-
-const generateUUID = () => {
-  let dt = new Date().getTime();
-  const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-    /[xy]/g,
-    function (c) {
-      const r = (dt + Math.random() * 16) % 16 | 0;
-      dt = Math.floor(dt / 16);
-      return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
-    }
-  );
-  return uuid;
-};
+const DEFAULT_SELECTOR_TIMEOUT = 30000;
 
 const getChipotleMenuData = async () => {
-  const uuid = generateUUID();
   // identify whether we are running locally or in AWS
   const isLocal = process.env.AWS_EXECUTION_ENV === undefined;
 
@@ -61,7 +20,20 @@ const getChipotleMenuData = async () => {
   if (isLocal) {
     // if we are running locally, use the puppeteer that is installed in the node_modules folder
     console.log("creating local browser");
-    browser = await require("puppeteer").launch();
+    browser = await require("puppeteer").launch({
+      args: [
+        ...chromium.args,
+        "--hide-scrollbars",
+        "--disable-web-security",
+        "--ignore-certificate-errors",
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu",
+      ],
+      defaultViewport: chromium.defaultViewport,
+      headless: chromium.headless,
+    });
   } else {
     // if we are running in AWS, download and use a compatible version of chromium at runtime
     console.log("fetching executable path");
@@ -98,27 +70,17 @@ const getChipotleMenuData = async () => {
         request.continue();
       }
     });
-    // page.on("request", (request: any) => {
-    //   console.log(`${uuid} - Request:`, request.url());
-    //   if (
-    //     request.isNavigationRequest() &&
-    //     request.frame() === page.mainFrame() &&
-    //     request.url() !== SCRAPE_URL
-    //   ) {
-    //     request.abort("aborted");
-    //   } else {
-    //     request.continue();
-    //   }
-    // });
 
     console.log("doing cheerio");
     await page.goto(SCRAPE_URL, { waitUntil: "networkidle2", timeout: 0 });
     console.log("navigated successfully to ", SCRAPE_URL);
 
-    await page.waitForSelector(".toast-name-container", {
-      timeout: DEFAULT_SELECTOR_TIMEOUT,
-    });
-    await page.click(".toast-name-container");
+    await page.screenshot({ path: "screenshots/1.png" });
+
+    // await page.waitForSelector(".toast-name-container", {
+    //   timeout: DEFAULT_SELECTOR_TIMEOUT,
+    // });
+    // await page.click(".toast-name-container");
 
     await page.waitForSelector('input[type="text"]', {
       timeout: DEFAULT_SELECTOR_TIMEOUT,
