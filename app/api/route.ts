@@ -21,12 +21,14 @@ const exePath =
 const getOptions = async () => {
   let options;
   if (process.env.NODE_ENV === "production") {
+    console.log("using production options");
     options = {
       args: chrome.args,
       executablePath: await chrome.executablePath,
       headless: chrome.headless,
     };
   } else {
+    console.log("using non-production options");
     options = {
       args: [],
       // executablePath: exePath,
