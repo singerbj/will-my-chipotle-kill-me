@@ -69,7 +69,16 @@ const getChipotleMenuData = async () => {
     );
     console.log("creating production browser");
     browser = await puppeteer.launch({
-      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      args: [
+        ...chromium.args,
+        "--hide-scrollbars",
+        "--disable-web-security",
+        "--ignore-certificate-errors",
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu",
+      ],
       defaultViewport: chromium.defaultViewport,
       executablePath,
       headless: chromium.headless,
@@ -81,19 +90,25 @@ const getChipotleMenuData = async () => {
 
   try {
     await page.setRequestInterception(true);
-
     page.on("request", (request: any) => {
-      console.log(`${uuid} - Request:`, request.url());
-      if (
-        request.isNavigationRequest() &&
-        request.frame() === page.mainFrame() &&
-        request.url() !== SCRAPE_URL
-      ) {
-        request.abort("aborted");
+      if (["image", "stylesheet"].includes(request.resourceType())) {
+        request.abort();
       } else {
         request.continue();
       }
     });
+    // page.on("request", (request: any) => {
+    //   console.log(`${uuid} - Request:`, request.url());
+    //   if (
+    //     request.isNavigationRequest() &&
+    //     request.frame() === page.mainFrame() &&
+    //     request.url() !== SCRAPE_URL
+    //   ) {
+    //     request.abort("aborted");
+    //   } else {
+    //     request.continue();
+    //   }
+    // });
 
     console.log("doing cheerio");
     await page.goto(SCRAPE_URL, { waitUntil: "networkidle2", timeout: 0 });
