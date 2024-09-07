@@ -6,7 +6,7 @@ const nextConfig = {
         // Important: return the modified config
         return { 
             ...config, 
-            externals: ['chrome-aws-lambda'],
+            externals: [...config.externals, 'chrome-aws-lambda'],
         }
     },
 }
