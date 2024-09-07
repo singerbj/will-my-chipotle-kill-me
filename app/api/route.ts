@@ -39,22 +39,28 @@ const exePath =
 // };
 
 const getChipotleMenuData = async () => {
-  console.log("creating browser");
   // identify whether we are running locally or in AWS
   const isLocal = process.env.AWS_EXECUTION_ENV === undefined;
 
-  const browser = isLocal
-    ? // if we are running locally, use the puppeteer that is installed in the node_modules folder
-      await require("puppeteer").launch()
-    : // if we are running in AWS, download and use a compatible version of chromium at runtime
-      await puppeteer.launch({
-        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(
-          "https://github.com/Sparticuz/chromium/releases/download/v127.0.0/chromium-v127.0.0-pack.tar"
-        ),
-        headless: chromium.headless,
-      });
+  let browser;
+  if (isLocal) {
+    // if we are running locally, use the puppeteer that is installed in the node_modules folder
+    console.log("creating local browser");
+    browser = await require("puppeteer").launch();
+  } else {
+    // if we are running in AWS, download and use a compatible version of chromium at runtime
+    console.log("fetching executable path");
+    const executablePath = await chromium.executablePath(
+      "https://github.com/Sparticuz/chromium/releases/download/v127.0.0/chromium-v127.0.0-pack.tar"
+    );
+    console.log("creating production browser");
+    browser = await puppeteer.launch({
+      args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless,
+    });
+  }
 
   console.log("creating page");
   const page = await browser.newPage();
