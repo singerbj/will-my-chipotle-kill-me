@@ -38,7 +38,21 @@ const exePath =
 //   return options;
 // };
 
+const generateUUID = () => {
+  let dt = new Date().getTime();
+  const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    /[xy]/g,
+    function (c) {
+      const r = (dt + Math.random() * 16) % 16 | 0;
+      dt = Math.floor(dt / 16);
+      return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    }
+  );
+  return uuid;
+};
+
 const getChipotleMenuData = async () => {
+  const uuid = generateUUID();
   // identify whether we are running locally or in AWS
   const isLocal = process.env.AWS_EXECUTION_ENV === undefined;
 
@@ -62,9 +76,24 @@ const getChipotleMenuData = async () => {
     });
   }
 
-  console.log("creating page");
-  const page = await browser.newPage();
   try {
+    console.log("creating page");
+    const page = await browser.newPage();
+    await page.setRequestInterception(true);
+
+    page.on("request", (request: any) => {
+      console.log(`${uuid} - Request:`, request.url());
+      if (
+        request.isNavigationRequest() &&
+        request.frame() === page.mainFrame() &&
+        request.url() !== SCRAPE_URL
+      ) {
+        request.abort("aborted");
+      } else {
+        request.continue();
+      }
+    });
+
     console.log("doing cheerio");
     await page.goto(SCRAPE_URL, { waitUntil: "networkidle2", timeout: 0 });
     console.log("navigated successfully to ", SCRAPE_URL);
