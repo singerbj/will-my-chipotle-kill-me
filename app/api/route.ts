@@ -75,8 +75,6 @@ const getChipotleMenuData = async () => {
     await page.goto(SCRAPE_URL, { waitUntil: "networkidle2", timeout: 0 });
     console.log("navigated successfully to ", SCRAPE_URL);
 
-    await page.screenshot({ path: "screenshots/1.png" });
-
     // await page.waitForSelector(".toast-name-container", {
     //   timeout: DEFAULT_SELECTOR_TIMEOUT,
     // });
