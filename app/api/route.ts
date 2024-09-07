@@ -48,7 +48,7 @@ const getChipotleMenuData = async () => {
       await require("puppeteer").launch()
     : // if we are running in AWS, download and use a compatible version of chromium at runtime
       await puppeteer.launch({
-        args: chromium.args,
+        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(
           "https://github.com/Sparticuz/chromium/releases/download/v127.0.0/chromium-v127.0.0-pack.tar"
