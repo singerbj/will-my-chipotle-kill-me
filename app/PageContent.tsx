@@ -93,7 +93,7 @@ export const PageContent = () => {
         )}
         {hasError && <div className="w-full">Try again later</div>}
         {lastUpdated && (
-          <div className="text-sm text-center w-full mt-4">
+          <div className="text-xs text-gray-600 text-center w-full mt-8">
             <FadeInAndGrow delay={2}>
               {new Date(lastUpdated).toLocaleString()}
             </FadeInAndGrow>
