@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "clear_redis": "npx @dotenvx/dotenvx run --env-file=.env.development.local -- ts-node -r dotenv/config  --compiler-options '{\"module\":\"CommonJS\"}' ./scripts/clear_redis.ts"
+    "clear_redis": "npx @dotenvx/dotenvx run --env-file=.env.development.local -- ts-node -r dotenv/config  --compiler-options '{\"module\":\"CommonJS\"}' ./scripts/clear_redis.ts",
+    "check_redis": "npx @dotenvx/dotenvx run --env-file=.env.development.local -- ts-node -r dotenv/config  --compiler-options '{\"module\":\"CommonJS\"}' ./scripts/check_redis.ts"
   },
   "dependencies": {
     "@sparticuz/chromium-min": "127.0.0",

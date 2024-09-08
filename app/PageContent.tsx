@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import GrowingTextLoop from "@/components/GrowingTextLoop";
