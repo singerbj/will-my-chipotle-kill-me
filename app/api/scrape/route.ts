@@ -2,10 +2,10 @@ import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest } from "next/server";
 import { kv } from "@vercel/kv";
+import { MENU_ITEMS_KEY } from "@/util/keys";
 
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
-export const MENU_ITEMS_KEY = "menuItems";
-const PROCESSING_KEY = "processing";
+const PROCESSING_KEY = "will-my-chipotle-kill-me_processing";
 const DEFAULT_SELECTOR_TIMEOUT = 30000;
 
 const getChipotleMenuData = async () => {
