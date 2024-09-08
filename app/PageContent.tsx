@@ -30,8 +30,6 @@ export const PageContent = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["apiData"],
     queryFn: fetchData,
-    staleTime: 3600000,
-    retry: false,
   });
   const hasError = data?.error;
   const menuItems = data?.menuItems;

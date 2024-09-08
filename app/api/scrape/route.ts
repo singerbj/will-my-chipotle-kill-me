@@ -5,6 +5,7 @@ import { kv } from "@vercel/kv";
 import { MENU_ITEMS_KEY, PROCESSING_KEY } from "@/util/keys";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
 const DEFAULT_SELECTOR_TIMEOUT = 30000;
@@ -145,10 +146,10 @@ const getChipotleMenuData = async () => {
   }
 };
 
-export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 export async function GET(request: NextRequest) {
   try {
     const processing = await kv.get(PROCESSING_KEY);
+    console.log("processing", processing);
     if (!processing) {
       const menuItems = await getChipotleMenuData();
       console.log("Saving the ingredients!!!!!!!!!!!!");
