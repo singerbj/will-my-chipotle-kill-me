@@ -1,7 +1,9 @@
 import { MENU_ITEMS_KEY } from "@/util/keys";
 import { kv } from "@vercel/kv";
 
+export const dynamic = "force-dynamic";
 export const maxDuration = 60; // This function can run for a maximum of 5 seconds
+
 export async function GET() {
   try {
     const menuItems = await kv.get(MENU_ITEMS_KEY);

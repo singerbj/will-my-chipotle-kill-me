@@ -4,6 +4,8 @@ import { NextRequest } from "next/server";
 import { kv } from "@vercel/kv";
 import { MENU_ITEMS_KEY, PROCESSING_KEY } from "@/util/keys";
 
+export const dynamic = "force-dynamic";
+
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
 const DEFAULT_SELECTOR_TIMEOUT = 30000;
 
