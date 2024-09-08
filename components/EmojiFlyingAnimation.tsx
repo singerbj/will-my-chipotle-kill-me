@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
 
-interface EmojiAnimationProps {
+interface EmojiFlyingAnimationProps {
   emoji: string;
 }
 
@@ -9,7 +9,9 @@ const randInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const EmojiAnimation: React.FC<EmojiAnimationProps> = ({ emoji }) => {
+const EmojiFlyingAnimation: React.FC<EmojiFlyingAnimationProps> = ({
+  emoji,
+}) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -53,4 +55,4 @@ const EmojiAnimation: React.FC<EmojiAnimationProps> = ({ emoji }) => {
   );
 };
 
-export default EmojiAnimation;
+export default EmojiFlyingAnimation;

@@ -3,8 +3,12 @@
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import GrowingTextLoop from "@/components/GrowingTextLoop";
-import EmojiAnimation from "@/components/EmojiAnimation";
+import EmojiFallingAnimation from "@/components/EmojiFallingAnimation";
 import FadeInAndGrow from "@/components/FadeInAndGrow";
+import { useEffect, useState } from "react";
+
+const NUMBER_OF_EMOJIS = 15;
+const EMOJI_DELAY = 2000;
 
 const fetchData = async () => {
   let res = await fetch("/api/menu_items");
@@ -30,6 +34,7 @@ const messages = [
 ];
 
 export const PageContent = () => {
+  const [renderEmojis, setRenderEmojis] = useState(false);
   const { data, isLoading } = useQuery({
     queryKey: ["apiData"],
     queryFn: fetchData,
@@ -41,6 +46,21 @@ export const PageContent = () => {
     menuItems && menuItems.map
       ? menuItems?.map((item: string) => item.toLowerCase()).includes("pastor")
       : false;
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (menuItems) {
+      timeoutId = setTimeout(() => {
+        setRenderEmojis(true);
+      }, EMOJI_DELAY);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [menuItems]);
+
   return (
     <>
       <div className="flex flex-grow">
@@ -80,13 +100,15 @@ export const PageContent = () => {
           </div>
         )}
       </div>
-      {/* <EmojiAnimation emoji="😵"></EmojiAnimation>
-      <EmojiAnimation emoji="😵"></EmojiAnimation>
-      <EmojiAnimation emoji="😵"></EmojiAnimation>
-      <EmojiAnimation emoji="😵"></EmojiAnimation>
-      <EmojiAnimation emoji="😵"></EmojiAnimation>
-      <EmojiAnimation emoji="😵"></EmojiAnimation>
-      <EmojiAnimation emoji="😵"></EmojiAnimation> */}
+      {renderEmojis &&
+        Array(NUMBER_OF_EMOJIS)
+          .fill(null)
+          .map((_, index) => (
+            <EmojiFallingAnimation
+              key={index}
+              emoji={hasAlPastor ? "💀" : "😌"}
+            ></EmojiFallingAnimation>
+          ))}
     </>
   );
 };
