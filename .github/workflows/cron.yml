@@ -1,0 +1,13 @@
+# .github/workflows/cron.yml
+name: Cron job
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Run every hour
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make API call to Vercel
+        run: curl -X GET "https://will-my-chipotle-kill-me.vercel.app/api/scrape"

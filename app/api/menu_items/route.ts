@@ -145,22 +145,15 @@ const getChipotleMenuData = async () => {
 export const maxDuration = 60; // This function can run for a maximum of 5 seconds
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const force = !!searchParams.get("force");
-
     const menuItems = cacheData.get(MENU_ITEMS_KEY);
-    if (!force && menuItems) {
-      console.log("returning cached data - force: ", force);
+    if (menuItems) {
+      console.log("returning cached data");
       return Response.json(menuItems);
     } else {
-      console.log("returning scraped data - force: ", force);
-      const menuItems = await getChipotleMenuData();
-      cacheData.put(MENU_ITEMS_KEY, menuItems, HOURS_TO_CACHE * 1000 * 60 * 60);
-      return Response.json(menuItems);
+      return Response.json(null, { status: 202 });
     }
   } catch (e) {
-    // console.error(e);
-    // return Response.json({ error: e });
-    throw e;
+    console.error(e);
+    return Response.json({ error: e }, { status: 500 });
   }
 }

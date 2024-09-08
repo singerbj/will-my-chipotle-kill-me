@@ -2,7 +2,13 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchData = async () => {
-  const res = await fetch("/api");
+  let res = await fetch("/api/menu_items");
+  if (res.status === 202) {
+    await fetch("/api/scrape");
+    // wait 2 seconds before recursively trying again
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    res = await fetchData();
+  }
   return res.json();
 };
 
