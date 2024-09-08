@@ -1,17 +1,17 @@
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
-
-import cacheData from "memory-cache";
 import { NextRequest } from "next/server";
+import { kv } from "@vercel/kv";
 
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
-const MENU_ITEMS_KEY = "menuItems";
+export const MENU_ITEMS_KEY = "menuItems";
 const PROCESSING_KEY = "processing";
-const HOURS_TO_CACHE = 24;
 const DEFAULT_SELECTOR_TIMEOUT = 30000;
 
 const getChipotleMenuData = async () => {
-  cacheData.put(MENU_ITEMS_KEY, true);
+  await kv.set(PROCESSING_KEY, true, {
+    ex: 3600, // 1 hour
+  });
 
   // identify whether we are running locally or in AWS
   const isLocal = process.env.AWS_EXECUTION_ENV === undefined;
@@ -139,18 +139,22 @@ const getChipotleMenuData = async () => {
       await page.screenshot({ path: "screenshots/error.png" });
     }
     throw e;
-  } finally {
-    cacheData.del(MENU_ITEMS_KEY);
   }
 };
 
 export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 export async function GET(request: NextRequest) {
   try {
-    const processing = cacheData.get(PROCESSING_KEY);
+    const processing = await kv.get(PROCESSING_KEY);
     if (!processing) {
       const menuItems = await getChipotleMenuData();
-      cacheData.put(MENU_ITEMS_KEY, menuItems, HOURS_TO_CACHE * 1000 * 60 * 60);
+      await kv.set(
+        MENU_ITEMS_KEY,
+        { menuItems, lastUpdated: new Date().toISOString() },
+        {
+          ex: 86400, // 24 hours
+        }
+      );
       return new Response(null, { status: 200 });
     } else {
       return new Response(null, { status: 202 });

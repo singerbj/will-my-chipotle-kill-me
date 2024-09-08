@@ -20,9 +20,11 @@ export const PageContent = () => {
     retry: false,
   });
   const hasError = data?.error;
+  const menuItems = data?.menuItems;
+  const lastUpdated = data?.lastUpdated;
   const hasAlPastor =
-    data && data.map
-      ? data?.map((item: string) => item.toLowerCase()).includes("pastor")
+    menuItems && menuItems.map
+      ? menuItems?.map((item: string) => item.toLowerCase()).includes("pastor")
       : false;
   return (
     <>
@@ -47,6 +49,9 @@ export const PageContent = () => {
           </div>
         )}
         {hasError && <div className="">Try again later</div>}
+      </div>
+      <div className="flex flex-grow font-bold text-xl text-center">
+        {lastUpdated && <div className="">{lastUpdated}</div>}
       </div>
     </>
   );
