@@ -56,9 +56,9 @@ export const PageContent = () => {
           priority
         />
       </div>
-      <div className="flex flex-grow font-bold text-5xl text-center">
+      <div className="flex flex-grow flex-col font-bold text-4xl text-center">
         {!hasError && (
-          <div className="">
+          <div className="w-full">
             {isLoading ? (
               <GrowingTextLoop messages={messages} />
             ) : hasAlPastor ? (
@@ -68,10 +68,10 @@ export const PageContent = () => {
             )}
           </div>
         )}
-        {hasError && <div className="">Try again later</div>}
+        {hasError && <div className="w-full">Try again later</div>}
         {lastUpdated && (
-          <div className="text-xl text-center">
-            <div className="">{lastUpdated}</div>
+          <div className="text-sm text-center w-full mt-4">
+            {new Date(lastUpdated).toLocaleString()}
           </div>
         )}
       </div>
