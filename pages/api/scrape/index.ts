@@ -1,3 +1,4 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest } from "next/server";
@@ -146,7 +147,14 @@ const getChipotleMenuData = async () => {
   }
 };
 
-export async function GET(request: NextRequest) {
+type ResponseData = {
+  error?: any;
+};
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
   try {
     const processing = await kv.get(PROCESSING_KEY);
     console.log("processing", processing);
@@ -160,12 +168,12 @@ export async function GET(request: NextRequest) {
           ex: 86400, // 24 hours
         }
       );
-      return new Response(null, { status: 200 });
+      return res.status(200).json({});
     } else {
-      return new Response(null, { status: 202 });
+      return res.status(202).json({});
     }
   } catch (e) {
     console.error(e);
-    return Response.json({ error: e }, { status: 500 });
+    return res.status(500).json({ error: e });
   }
 }
