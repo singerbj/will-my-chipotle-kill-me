@@ -70,7 +70,7 @@ const getChipotleMenuData = async () => {
       }
     });
 
-    console.log("doing cheerio");
+    console.log("doing puppeteer scraping");
     await page.goto(SCRAPE_URL, { waitUntil: "networkidle2", timeout: 0 });
     console.log("navigated successfully to ", SCRAPE_URL);
 
@@ -149,6 +149,7 @@ export async function GET(request: NextRequest) {
     const processing = await kv.get(PROCESSING_KEY);
     if (!processing) {
       const menuItems = await getChipotleMenuData();
+      console.log("Saving the ingredients!!!!!!!!!!!!");
       await kv.set(
         MENU_ITEMS_KEY,
         { menuItems, lastUpdated: new Date().toISOString() },

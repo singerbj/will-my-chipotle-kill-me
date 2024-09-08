@@ -5,7 +5,6 @@ export const maxDuration = 60; // This function can run for a maximum of 5 secon
 export async function GET() {
   try {
     const menuItems = await kv.get(MENU_ITEMS_KEY);
-    console.log(menuItems);
     if (menuItems) {
       console.log("returning cached data");
       return Response.json(menuItems);
