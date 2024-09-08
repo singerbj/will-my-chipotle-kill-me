@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
+import GrowingTextLoop from "@/components/GrowingTextLoop";
+import EmojiAnimation from "@/components/EmojiAnimation";
 
 const fetchData = async () => {
   let res = await fetch("/api/menu_items");
@@ -11,6 +13,18 @@ const fetchData = async () => {
   }
   return res.json();
 };
+
+const messages = [
+  "Checking on it",
+  "Getting ingredients",
+  "Trying to figure it out",
+  "Filling a water cup with soda",
+  "Fetching menu items",
+  "Investigating",
+  "Getting extra guac",
+  "Asking for a tortilla on the side",
+  "Checking if there are any fajitas left",
+];
 
 export const PageContent = () => {
   const { data, isLoading } = useQuery({
@@ -45,14 +59,29 @@ export const PageContent = () => {
       <div className="flex flex-grow font-bold text-5xl text-center">
         {!hasError && (
           <div className="">
-            {isLoading ? "Loading..." : hasAlPastor ? "Yes" : "No"}
+            {isLoading ? (
+              <GrowingTextLoop messages={messages} />
+            ) : hasAlPastor ? (
+              "Yes"
+            ) : (
+              "No"
+            )}
           </div>
         )}
         {hasError && <div className="">Try again later</div>}
+        {lastUpdated && (
+          <div className="text-xl text-center">
+            <div className="">{lastUpdated}</div>
+          </div>
+        )}
       </div>
-      <div className="flex flex-grow font-bold text-xl text-center">
-        {lastUpdated && <div className="">{lastUpdated}</div>}
-      </div>
+      {/* <EmojiAnimation emoji="😵"></EmojiAnimation>
+      <EmojiAnimation emoji="😵"></EmojiAnimation>
+      <EmojiAnimation emoji="😵"></EmojiAnimation>
+      <EmojiAnimation emoji="😵"></EmojiAnimation>
+      <EmojiAnimation emoji="😵"></EmojiAnimation>
+      <EmojiAnimation emoji="😵"></EmojiAnimation>
+      <EmojiAnimation emoji="😵"></EmojiAnimation> */}
     </>
   );
 };
