@@ -1,4 +1,4 @@
-import { MENU_ITEMS_KEY } from "../../../util/keys";
+import { MENU_ITEMS_KEY } from "@/util/keys";
 import { kv } from "@vercel/kv";
 
 export const maxDuration = 60; // This function can run for a maximum of 5 seconds

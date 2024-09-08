@@ -2,7 +2,7 @@ import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium-min";
 import { NextRequest } from "next/server";
 import { kv } from "@vercel/kv";
-import { MENU_ITEMS_KEY } from "../../../util/keys";
+import { MENU_ITEMS_KEY } from "@/util/keys";
 
 const SCRAPE_URL = "https://www.chipotle.com/order/build/burrito-bowl";
 const PROCESSING_KEY = "will-my-chipotle-kill-me_processing";
