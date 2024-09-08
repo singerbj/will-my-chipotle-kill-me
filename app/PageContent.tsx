@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import GrowingTextLoop from "@/components/GrowingTextLoop";
 import EmojiAnimation from "@/components/EmojiAnimation";
+import FadeInAndGrow from "@/components/FadeInAndGrow";
 
 const fetchData = async () => {
   let res = await fetch("/api/menu_items");
@@ -44,17 +45,19 @@ export const PageContent = () => {
     <>
       <div className="flex flex-grow">
         <div className="flex flex-col justify-end font-bold text-5xl text-center">
-          Will my Chipotle kill me?
+          <FadeInAndGrow delay={0.25}>Will my Chipotle kill me?</FadeInAndGrow>
         </div>
       </div>
       <div className="">
-        <Image
-          src="/chipotle.svg"
-          alt="Skull that looks like Chipotle"
-          width={250}
-          height={250}
-          priority
-        />
+        <FadeInAndGrow delay={0.75}>
+          <Image
+            src="/chipotle.svg"
+            alt="Skull that looks like Chipotle"
+            width={250}
+            height={250}
+            priority
+          />
+        </FadeInAndGrow>
       </div>
       <div className="flex flex-grow flex-col font-bold text-4xl text-center">
         {!hasError && (
@@ -62,16 +65,18 @@ export const PageContent = () => {
             {isLoading ? (
               <GrowingTextLoop messages={messages} />
             ) : hasAlPastor ? (
-              "Yes"
+              <FadeInAndGrow delay={1.5}>Yes</FadeInAndGrow>
             ) : (
-              "No"
+              <FadeInAndGrow delay={1.5}> No</FadeInAndGrow>
             )}
           </div>
         )}
         {hasError && <div className="w-full">Try again later</div>}
         {lastUpdated && (
           <div className="text-sm text-center w-full mt-4">
-            {new Date(lastUpdated).toLocaleString()}
+            <FadeInAndGrow delay={2}>
+              {new Date(lastUpdated).toLocaleString()}
+            </FadeInAndGrow>
           </div>
         )}
       </div>

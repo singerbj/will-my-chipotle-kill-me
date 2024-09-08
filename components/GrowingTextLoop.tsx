@@ -6,8 +6,12 @@ const GrowingTextLoop = ({ messages }: { messages: string[] }) => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
   useEffect(() => {
+    let isMounted = true;
+
     const sequence = async () => {
-      while (true) {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      while (isMounted) {
         await controls.start({
           opacity: 1,
           transition: { duration: 1.5 },
@@ -46,6 +50,10 @@ const GrowingTextLoop = ({ messages }: { messages: string[] }) => {
     };
 
     sequence();
+
+    return () => {
+      isMounted = false;
+    };
   }, [controls, messages.length]);
 
   return (
